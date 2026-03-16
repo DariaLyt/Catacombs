@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://bsaqbajo2xvb0"]
+
+[ext_resource type="Texture2D" uid="uid://c1wbl07unftey" path="res://Assets/RF_Catacombs_v1.0/torch_1.png" id="1_ho5w0"]
+[ext_resource type="Texture2D" uid="uid://c0v37v0cd2fy2" path="res://Assets/RF_Catacombs_v1.0/torch_4.png" id="2_7vkha"]
+[ext_resource type="Texture2D" uid="uid://cnd22ume4hfm8" path="res://Assets/blurred-circle-tiny.png" id="3_8kjeb"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tj368"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ho5w0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_7vkha")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Torch" type="Area2D" unique_id=1392156398]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=411581879]
+texture_filter = 1
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_tj368")
+autoplay = "default"
+frame_progress = 0.49409276
+
+[node name="PointLight2D" type="PointLight2D" parent="AnimatedSprite2D" unique_id=1168685109]
+position = Vector2(0.16666639, 0.33333352)
+color = Color(0.70980394, 0.5019608, 0, 1)
+energy = 1.72
+texture = ExtResource("3_8kjeb")
+texture_scale = 0.3
