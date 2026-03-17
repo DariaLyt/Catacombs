@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://bsaqbajo2xvb0"]
 
+[ext_resource type="Script" uid="uid://bov6wn014r6mm" path="res://Scripts/torch.gd" id="1_8kjeb"]
 [ext_resource type="Texture2D" uid="uid://c1wbl07unftey" path="res://Assets/RF_Catacombs_v1.0/torch_1.png" id="1_ho5w0"]
 [ext_resource type="Texture2D" uid="uid://c0v37v0cd2fy2" path="res://Assets/RF_Catacombs_v1.0/torch_4.png" id="2_7vkha"]
 [ext_resource type="Texture2D" uid="uid://cnd22ume4hfm8" path="res://Assets/blurred-circle-tiny.png" id="3_8kjeb"]
+[ext_resource type="AudioStream" uid="uid://c1s0wx3toc4cd" path="res://Assets/sounds/fire1.mp3" id="4_7vkha"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tj368"]
 animations = [{
@@ -18,7 +20,11 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7vkha"]
+size = Vector2(100, 155)
+
 [node name="Torch" type="Area2D" unique_id=1392156398]
+script = ExtResource("1_8kjeb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=411581879]
 texture_filter = 1
@@ -33,3 +39,14 @@ color = Color(0.70980394, 0.5019608, 0, 1)
 energy = 1.72
 texture = ExtResource("3_8kjeb")
 texture_scale = 0.3
+
+[node name="FireSound" type="AudioStreamPlayer2D" parent="." unique_id=243244795]
+stream = ExtResource("4_7vkha")
+volume_db = -20.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1740444469]
+position = Vector2(0, 50.5)
+shape = SubResource("RectangleShape2D_7vkha")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

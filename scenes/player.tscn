@@ -164,10 +164,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3vyb7"]
-size = Vector2(11.666667, 2.499999)
+size = Vector2(10.285714, 2.499999)
 
 [node name="Player" type="CharacterBody2D" unique_id=1349436744]
-scale = Vector2(3, 3)
+scale = Vector2(4, 4)
 script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=19514919]
@@ -177,7 +177,8 @@ animation = &"idle"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=757002921]
-position = Vector2(-0.16666651, 5.916667)
+position = Vector2(4.257474e-07, 5.916666)
+scale = Vector2(0.9999999, 0.9999999)
 shape = SubResource("RectangleShape2D_3vyb7")
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=885508586]
