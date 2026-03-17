@@ -54,7 +54,7 @@ func _setup_level(level_root: Node) -> void:
 # function that make visual "transition" between levels
 func _fade(to_alpha: float) -> void:
 	var tween := create_tween()
-	tween.tween_property(fade, "modulate:a", to_alpha, 1.5)
+	tween.tween_property(fade, "modulate:a", to_alpha, 0.5)
 	await tween.finished
 
 
