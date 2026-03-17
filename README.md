@@ -45,3 +45,7 @@ This project focuses on several core pillars of game development:
 --- 
 
 **NOTE:** This is a hobbyist project meant for educational purposes. Feel free to poke around the code and see how things are wired!
+
+---
+
+For more functionality details checkout [Note.md](NOTE.md)
