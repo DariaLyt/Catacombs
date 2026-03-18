@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Catacombs"
-run/main_scene="uid://kb7dj3c0khjr"
+run/main_scene="uid://75ghr4dgrj5h"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

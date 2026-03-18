@@ -12,11 +12,6 @@ func _ready() -> void:
 	_load_level(level)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
-
-
 func _load_level(level_number: int) -> void:
 	await _fade(1.0)
 	if current_level_node:
