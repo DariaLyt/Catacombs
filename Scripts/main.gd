@@ -1,16 +1,30 @@
 extends Node2D
 @onready var fade: ColorRect = $HUD/Fade
+@onready var pause_menu: CanvasLayer = $PauseMenu
+
 
 var level: int = 1 #starting point by default level1
 var current_level_node: Node = null
 var travel_direction: String = "next"
+var paused = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	fade.modulate.a = 1.0 # black screen at the beginning
 	current_level_node = get_node("LevelRoot")
 	_load_level(level)
+	pause_menu.hide()
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"): # Escape key by default
+		toggle_pause()
+
+func toggle_pause() -> void:
+	get_tree().paused = !get_tree().paused
+	if get_tree().paused:
+		pause_menu.show()
+	else:
+		pause_menu.hide()
 
 func _load_level(level_number: int) -> void:
 	await _fade(1.0)
@@ -21,7 +35,6 @@ func _load_level(level_number: int) -> void:
 	add_child(current_level_node)
 	current_level_node.name = "LevelRoot"
 	_setup_level(current_level_node)
-	
 	await _fade(0.0)
 	
 func _setup_level(level_root: Node) -> void:
@@ -44,8 +57,7 @@ func _setup_level(level_root: Node) -> void:
 		if spawn_point:
 			player.global_position = spawn_point.global_position
 			
-			
-	
+
 # function that make visual "transition" between levels
 func _fade(to_alpha: float) -> void:
 	var tween := create_tween()

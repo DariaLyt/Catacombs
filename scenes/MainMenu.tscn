@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://eeikwqkkbna1" path="res://ui/dungen.png" id="1_0ykhv"]
 [ext_resource type="Script" uid="uid://fu6hro13q26e" path="res://Scripts/main_menu.gd" id="1_2wh52"]
 [ext_resource type="FontFile" uid="uid://6hbdeq2t0tcq" path="res://Assets/Fonts/PixelPurl.ttf" id="2_2wh52"]
+[ext_resource type="AudioStream" uid="uid://c5j5qxy4aa4ij" path="res://Assets/sounds/main_menu.mp3" id="4_ow34m"]
 
 [node name="MarginContainer" type="MarginContainer" unique_id=198869744]
 anchors_preset = 15
@@ -55,6 +56,11 @@ theme_override_fonts/font = ExtResource("2_2wh52")
 theme_override_font_sizes/font_size = 50
 text = "Exit
 "
+
+[node name="DungeonSound" type="AudioStreamPlayer2D" parent="." unique_id=1316937811]
+stream = ExtResource("4_ow34m")
+volume_db = -20.21
+autoplay = true
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/MenuOptions/NewGame" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/MenuOptions/LoadGame" to="." method="_on_load_game_pressed"]

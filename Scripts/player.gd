@@ -1,7 +1,6 @@
 extends CharacterBody2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
-
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 var move_dir: String = "idle"
@@ -35,7 +34,6 @@ func _physics_process(_delta: float) -> void:
 			_animate_down()
 		if direction_y == -1.0:
 			_animate_up()
-				
 		move_and_slide()
 		_animate_idle()
 
