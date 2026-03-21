@@ -1,12 +1,16 @@
 extends Node2D
 @onready var fade: ColorRect = $HUD/Fade
 @onready var pause_menu: CanvasLayer = $PauseMenu
+@onready var camera_2d: Camera2D = $Camera2D
+@onready var health_bar: ProgressBar = $HUD/HealthBar
 
 
 var level: int = 1 #starting point by default level1
 var current_level_node: Node = null
 var travel_direction: String = "next"
 var paused = false
+var max_health:int = 100
+var current_health:int = 100
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -14,6 +18,24 @@ func _ready() -> void:
 	current_level_node = get_node("LevelRoot")
 	_load_level(level)
 	pause_menu.hide()
+	_update_health_ui()
+	
+func update_health(amount: int) -> void:
+	current_health = clampi(current_health + amount, 0, max_health)
+	_update_health_ui()
+	
+	if current_health <= 0:
+		_player_died()
+
+func _update_health_ui() -> void:
+	health_bar.value = current_health
+
+func _player_died() -> void:
+	print("Player has fallen!")
+	# You can trigger a game over or reload the level here
+	_load_level(level) 
+	current_health = max_health # Reset health
+	_update_health_ui()
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"): # Escape key by default
@@ -35,6 +57,10 @@ func _load_level(level_number: int) -> void:
 	add_child(current_level_node)
 	current_level_node.name = "LevelRoot"
 	_setup_level(current_level_node)
+	var player = current_level_node.get_node_or_null("Player")
+	if player:
+		camera_2d.global_position = player.global_position
+		camera_2d.reset_smoothing() # Prevents the "slide" if smoothing is on
 	await _fade(0.0)
 	
 func _setup_level(level_root: Node) -> void:
@@ -56,7 +82,15 @@ func _setup_level(level_root: Node) -> void:
 		var spawn_point = level_root.get_node_or_null(marker_name)
 		if spawn_point:
 			player.global_position = spawn_point.global_position
-			
+		_assign_camera_to_player(player)
+		
+func _assign_camera_to_player(player: Node2D) -> void:
+	var remote_transform = player.get_node_or_null("CameraFollower")
+	if !remote_transform:
+		remote_transform = RemoteTransform2D.new()
+		remote_transform.name = "CameraFollower"
+		player.add_child(remote_transform)
+	remote_transform.remote_path = camera_2d.get_path()
 
 # function that make visual "transition" between levels
 func _fade(to_alpha: float) -> void:
@@ -78,3 +112,4 @@ func _previous_door_body_entered(body: Node2D) -> void:
 		travel_direction = "prev"
 		body.can_move = false
 		_load_level(level)
+		body.take_damage(4)

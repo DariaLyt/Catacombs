@@ -187,5 +187,3 @@ scale = Vector2(1.5, 1.5)
 color = Color(0.81960785, 0.5803922, 0, 1)
 texture = ExtResource("3_qhqgy")
 texture_scale = 0.3
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1273550731]

@@ -5,6 +5,9 @@
 [ext_resource type="AudioStream" uid="uid://c5j5qxy4aa4ij" path="res://Assets/sounds/main_menu.mp3" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://bbhyljk562375" path="res://scenes/PauseMenu.tscn" id="4_jyhfs"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbgi4"]
+bg_color = Color(0.24705882, 0, 0, 0.8862745)
+
 [node name="Main" type="Node2D" unique_id=882748708]
 script = ExtResource("1_sugp2")
 
@@ -21,6 +24,15 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
+[node name="HealthBar" type="ProgressBar" parent="HUD" unique_id=473730576]
+offset_left = 58.0
+offset_top = 39.0
+offset_right = 289.0
+offset_bottom = 69.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_tbgi4")
+value = 100.0
+show_percentage = false
+
 [node name="DungeonSound" type="AudioStreamPlayer2D" parent="." unique_id=1958503306]
 stream = ExtResource("3_sugp2")
 volume_db = -40.0
@@ -28,3 +40,6 @@ autoplay = true
 
 [node name="PauseMenu" parent="." unique_id=1751500795 instance=ExtResource("4_jyhfs")]
 process_mode = 3
+visible = false
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=13348397]

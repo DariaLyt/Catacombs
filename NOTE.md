@@ -1,3 +1,10 @@
+## 21.03
+ - added very basic "health bar" ui and implemented take_damage function
+ - moved Camera2D to Main scene, so it doesn't get deleted/created with every level
+ - fixed player's "diagonal slide", forcing player to move only one direction even if 2 keys are pressed
+ - modified some collision in level3
+
+
 ## 19.03 
  - fixed the torch sound, added sound fading away effect.
  - added a responsive starting screen/main menu ui
