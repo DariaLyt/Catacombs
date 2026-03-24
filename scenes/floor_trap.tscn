@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://coovy25u2dnht"]
+
+[ext_resource type="Texture2D" uid="uid://dnk34vgoh4isy" path="res://Assets/RF_Catacombs_v1.0/spike_0.png" id="1_c10ei"]
+[ext_resource type="Texture2D" uid="uid://0pmqnkunai1r" path="res://Assets/RF_Catacombs_v1.0/spike_1.png" id="2_xhobk"]
+[ext_resource type="Texture2D" uid="uid://b34bnomltfs5i" path="res://Assets/RF_Catacombs_v1.0/spike_2.png" id="3_f13sl"]
+[ext_resource type="Texture2D" uid="uid://77ed5ty7ux2q" path="res://Assets/RF_Catacombs_v1.0/spike_3.png" id="4_b5dc6"]
+[ext_resource type="Texture2D" uid="uid://c3xe2cchcfn8h" path="res://Assets/RF_Catacombs_v1.0/spike_4.png" id="5_yd0xr"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mqav1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_c10ei")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_c10ei")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_c10ei")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_c10ei")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_c10ei")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_c10ei")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_xhobk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_f13sl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_b5dc6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_yd0xr")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pnuid"]
+size = Vector2(13.333332, 13.3333435)
+
+[node name="Floor_trap" type="Area2D" unique_id=172184807]
+scale = Vector2(3, 3)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1243087389]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_mqav1")
+autoplay = "default"
+frame_progress = 0.88460386
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1441043241]
+position = Vector2(-0.33333588, -0.33332825)
+shape = SubResource("RectangleShape2D_pnuid")

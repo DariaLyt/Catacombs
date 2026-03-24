@@ -11,6 +11,9 @@ var travel_direction: String = "next"
 var paused = false
 var max_health:int = 100
 var current_health:int = 100
+var player_on_trap: bool = false
+var trap_cooldown_timer: float = 0.0
+var TRAP_DAMAGE_DELAY: float = 1.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -19,7 +22,20 @@ func _ready() -> void:
 	_load_level(level)
 	pause_menu.hide()
 	_update_health_ui()
-	
+
+func _process(delta: float) -> void:
+	if trap_cooldown_timer > 0:
+		trap_cooldown_timer -= delta
+	if player_on_trap and trap_cooldown_timer <= 0:
+		var trap = current_level_node.get_node_or_null("Floor_trap")
+		if trap:
+			var sprite = trap.get_node("AnimatedSprite2D")
+			# If player is on trap AND spikes are out (frame 3)
+			if sprite.frame >= 6:
+				update_health(-5) 
+				trap_cooldown_timer = TRAP_DAMAGE_DELAY
+				# Note: You'll need a timer here, or the player will die in 0.1 seconds!
+					
 func update_health(amount: int) -> void:
 	current_health = clampi(current_health + amount, 0, max_health)
 	_update_health_ui()
@@ -84,6 +100,33 @@ func _setup_level(level_root: Node) -> void:
 			player.global_position = spawn_point.global_position
 		_assign_camera_to_player(player)
 		
+	var trap = level_root.get_node_or_null("Floor_trap")
+	if trap:
+		trap.body_entered.connect(_on_trap_entered)
+		trap.body_exited.connect(_on_trap_exited)
+
+func _on_trap_entered(body):
+	if body.name == "Player": player_on_trap = true
+
+func _on_trap_exited(body):
+	if body.name == "Player":
+		player_on_trap = false
+		trap_cooldown_timer = 0.0
+		
+func _take_trap_damage(player: Node2D) -> void:
+	#if player.name == "Player":
+		#player.take_damage(5)
+	if player.name == "Player":
+		# 1. Get the trap node from the level
+		var trap = current_level_node.get_node_or_null("Floor_trap")
+		if trap:
+			# 2. Get the sprite inside the trap
+			var sprite = trap.get_node_or_null("AnimatedSprite2D")
+			
+			# 3. Only damage if it's on a dangerous frame (e.g., frame 3 or 4)
+			if sprite and sprite.frame >= 5:
+				player.take_damage(5) # Using your update_health function
+		
 func _assign_camera_to_player(player: Node2D) -> void:
 	var remote_transform = player.get_node_or_null("CameraFollower")
 	if !remote_transform:
@@ -112,4 +155,3 @@ func _previous_door_body_entered(body: Node2D) -> void:
 		travel_direction = "prev"
 		body.can_move = false
 		_load_level(level)
-		body.take_damage(4)

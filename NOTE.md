@@ -1,3 +1,6 @@
+## 24.03
+- added floor traps -> animation and taking damage when spikes out
+
 ## 21.03
  - added very basic "health bar" ui and implemented take_damage function
  - moved Camera2D to Main scene, so it doesn't get deleted/created with every level
