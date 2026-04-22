@@ -1,3 +1,7 @@
+## 22.04
+- fixed floor traps "fast killing"
+- added enemy "skeleton" with patroling, player chasing and attacking functionality.  
+
 ## 24.03
 - added floor traps -> animation and taking damage when spikes out
 
