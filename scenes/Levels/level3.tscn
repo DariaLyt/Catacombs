@@ -3794,6 +3794,7 @@ sources/1 = SubResource("TileSetAtlasSource_8c41q")
 size = Vector2(97, 18)
 
 [node name="LevelRoot" type="Node2D" unique_id=1904277467]
+process_mode = 1
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=61518585]
 color = Color(0.5033745, 0.5033746, 0.50337446, 1)

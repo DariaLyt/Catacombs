@@ -114,7 +114,7 @@ animations = [{
 size = Vector2(13.333334, 6.666667)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_txkty"]
-radius = 33.04206
+radius = 49.553566
 
 [node name="Skeleton" type="CharacterBody2D" unique_id=718083218]
 scale = Vector2(3, 3)

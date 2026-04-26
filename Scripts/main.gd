@@ -4,6 +4,7 @@ extends Node2D
 @onready var camera_2d: Camera2D = $Camera2D
 @onready var health_bar: ProgressBar = $HUD/HealthBar
 
+@onready var inventory_menu: CanvasLayer = $InventoryMenu
 
 var level: int = 1 #starting point by default level1
 var current_level_node: Node = null
@@ -22,6 +23,7 @@ func _ready() -> void:
 	_load_level(level)
 	pause_menu.hide()
 	_update_health_ui()
+	inventory_menu.hide()
 
 func _process(delta: float) -> void:
 	if trap_cooldown_timer > 0:
@@ -52,11 +54,27 @@ func _player_died() -> void:
 	_load_level(level) 
 	current_health = max_health # Reset health
 	_update_health_ui()
-
+	
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"): # Escape key by default
-		toggle_pause()
+	if event.is_action_pressed("ui_cancel"):
+		if inventory_menu.visible:
+			toggle_inventory()
+		else:
+			toggle_pause()
+	if event.is_action_pressed("inventory"):
+		if not pause_menu.visible:
+			toggle_inventory()
 
+func toggle_inventory() -> void:
+	var player = current_level_node.get_node_or_null("Player")
+	if !player: return
+	get_tree().paused = !get_tree().paused
+	if get_tree().paused:
+		inventory_menu.update_inventory(player)
+		inventory_menu.show()
+	else:
+		inventory_menu.hide()
+		
 func toggle_pause() -> void:
 	get_tree().paused = !get_tree().paused
 	if get_tree().paused:

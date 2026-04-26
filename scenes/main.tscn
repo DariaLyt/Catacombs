@@ -4,11 +4,13 @@
 [ext_resource type="Script" uid="uid://cgyg6ni650e7p" path="res://Scripts/main.gd" id="1_sugp2"]
 [ext_resource type="AudioStream" uid="uid://c5j5qxy4aa4ij" path="res://Assets/sounds/main_menu.mp3" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://bbhyljk562375" path="res://scenes/PauseMenu.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://h4mntevvwmtr" path="res://scenes/inventory_menu.tscn" id="5_tbgi4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbgi4"]
 bg_color = Color(0.24705882, 0, 0, 0.8862745)
 
 [node name="Main" type="Node2D" unique_id=882748708]
+process_mode = 3
 script = ExtResource("1_sugp2")
 
 [node name="LevelRoot" parent="." unique_id=1904277467 instance=ExtResource("1_0wfyh")]
@@ -43,3 +45,6 @@ process_mode = 3
 visible = false
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=13348397]
+process_mode = 3
+
+[node name="InventoryMenu" parent="." unique_id=405076566 instance=ExtResource("5_tbgi4")]

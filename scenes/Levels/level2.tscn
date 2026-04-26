@@ -3310,6 +3310,7 @@ size = Vector2(97, 27)
 size = Vector2(97, 18)
 
 [node name="LevelRoot" type="Node2D" unique_id=1904277467]
+process_mode = 1
 y_sort_enabled = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=61518585]

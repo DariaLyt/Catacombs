@@ -1,0 +1,209 @@
+[gd_scene format=3 uid="uid://h4mntevvwmtr"]
+
+[ext_resource type="Script" uid="uid://dk5avf0a2ditr" path="res://Scripts/inventory_menu.gd" id="1_xh5dw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xh5dw"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.13319641, 0.13319641, 0.13319635, 0.7411765)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fgp8q"]
+bg_color = Color(0.20784314, 0.20784314, 0.20784314, 0)
+
+[node name="InventoryMenu" type="CanvasLayer" unique_id=405076566]
+process_mode = 3
+script = ExtResource("1_xh5dw")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=2034289709]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xh5dw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=688033783]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="DescLaber" type="Label" parent="Panel/VBoxContainer" unique_id=315169525]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=457657518]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Stats_Column" type="VBoxContainer" parent="Panel/VBoxContainer/HBoxContainer" unique_id=507235620]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column" unique_id=775632094]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/line_spacing = 5
+theme_override_font_sizes/font_size = 25
+
+[node name="Health_Stat" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column" unique_id=1887221611]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Health_Stat" unique_id=1467839717]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Health"
+
+[node name="StatValue" type="Label" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Health_Stat" unique_id=1316250945]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+horizontal_alignment = 2
+
+[node name="Arrow" type="TextureRect" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Health_Stat" unique_id=94432701]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Attack_Stat" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column" unique_id=893615319]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Attack_Stat" unique_id=1800013977]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Attack"
+
+[node name="StatValue" type="Label" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Attack_Stat" unique_id=472316947]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+horizontal_alignment = 2
+
+[node name="Arrow" type="TextureRect" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Attack_Stat" unique_id=1340881421]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Defense_Stat" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column" unique_id=31714064]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Defense_Stat" unique_id=110128738]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Defense"
+
+[node name="StatValue" type="Label" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Defense_Stat" unique_id=1221878720]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+horizontal_alignment = 2
+
+[node name="Arrow" type="TextureRect" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Defense_Stat" unique_id=786494439]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Agility_Stat" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column" unique_id=562122251]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Agility_Stat" unique_id=587417185]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Agility"
+
+[node name="StatValue" type="Label" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Agility_Stat" unique_id=45406158]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+horizontal_alignment = 2
+
+[node name="Arrow" type="TextureRect" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Agility_Stat" unique_id=1466794196]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Luck_Stat" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column" unique_id=328621778]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Luck_Stat" unique_id=333508041]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Luck"
+
+[node name="StatValue" type="Label" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Luck_Stat" unique_id=1921999912]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+horizontal_alignment = 2
+
+[node name="Arrow" type="TextureRect" parent="Panel/VBoxContainer/HBoxContainer/Stats_Column/Luck_Stat" unique_id=1798722749]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Equip_Column" type="VBoxContainer" parent="Panel/VBoxContainer/HBoxContainer" unique_id=1783099879]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TabButtons" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/Equip_Column" unique_id=1047909853]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="equip" type="Button" parent="Panel/VBoxContainer/HBoxContainer/Equip_Column/TabButtons" unique_id=1111398933]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "EQUIP"
+
+[node name="optimize" type="Button" parent="Panel/VBoxContainer/HBoxContainer/Equip_Column/TabButtons" unique_id=255827941]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "OPTIMIZE
+"
+
+[node name="clear" type="Button" parent="Panel/VBoxContainer/HBoxContainer/Equip_Column/TabButtons" unique_id=2078663883]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "CLEAR"
+
+[node name="Slots_Tree" type="Tree" parent="Panel/VBoxContainer/HBoxContainer/Equip_Column" unique_id=344939487]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/title_button_font_size = 25
+theme_override_styles/panel = SubResource("StyleBoxFlat_fgp8q")
+columns = 2
+allow_search = false
+scroll_horizontal_enabled = false
+scroll_vertical_enabled = false
+
+[node name="BottomBar" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=848235485]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer/BottomBar" unique_id=1669778874]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InventoryList" type="HBoxContainer" parent="Panel/VBoxContainer/BottomBar/ScrollContainer" unique_id=1779844982]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Equip_Column/TabButtons/equip" to="." method="_on_equip_pressed"]

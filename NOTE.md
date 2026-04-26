@@ -1,3 +1,7 @@
+## 26.04
+- added simple inventory 
+![Screenshot](GIF/26.04.png)
+
 ## 22.04
 - fixed floor traps "fast killing"
 - added enemy "skeleton" with patroling, player chasing and attacking functionality.  

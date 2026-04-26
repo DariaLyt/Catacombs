@@ -3305,6 +3305,7 @@ sources/1 = SubResource("TileSetAtlasSource_8c41q")
 size = Vector2(100, 22)
 
 [node name="LevelRoot" type="Node2D" unique_id=1904277467]
+process_mode = 1
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=61518585]
 color = Color(0.5033745, 0.5033746, 0.50337446, 1)
@@ -3331,6 +3332,7 @@ tile_map_data = PackedByteArray("AAAFAA0AAQAJAAIAAAAGAA0AAQAKAAIAAAALAA0AAQAJAAI
 tile_set = SubResource("TileSet_olg7q")
 
 [node name="Candles" type="Node2D" parent="." unique_id=1597669136]
+process_mode = 1
 
 [node name="Torch" parent="Candles" unique_id=1392156398 instance=ExtResource("4_mx8sn")]
 position = Vector2(288, 119)
