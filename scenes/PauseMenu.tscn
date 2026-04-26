@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://bbhyljk562375"]
+
+[ext_resource type="Script" uid="uid://c0bvhy3eowgpj" path="res://Scripts/pause_menu.gd" id="1_g4jo0"]
+[ext_resource type="FontFile" uid="uid://6hbdeq2t0tcq" path="res://Assets/Fonts/PixelPurl.ttf" id="1_jvnd5"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1751500795]
+script = ExtResource("1_g4jo0")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=750191443]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=513433145]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.5
+offset_right = 38.5
+offset_bottom = 225.0
+grow_horizontal = 2
+scale = Vector2(2, 2)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=400293225]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1942219311]
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jvnd5")
+theme_override_font_sizes/font_size = 25
+text = "
+
+
+
+Paused
+
+
+
+"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="ContinueGame" type="Button" parent="CenterContainer/VBoxContainer" unique_id=203976781]
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jvnd5")
+theme_override_font_sizes/font_size = 25
+text = "Continue
+"
+
+[node name="SaveGame" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1654671458]
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jvnd5")
+theme_override_font_sizes/font_size = 25
+text = "Save"
+
+[node name="Exit" type="Button" parent="CenterContainer/VBoxContainer" unique_id=830872048]
+process_mode = 3
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jvnd5")
+theme_override_font_sizes/font_size = 25
+text = "Exit"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ContinueGame" to="." method="_on_continue_game_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]

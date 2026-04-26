@@ -1,68 +1,72 @@
 extends CharacterBody2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
-
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 var move_dir: String = "idle"
 var is_moving = false
 var can_move = true
 
+var base_health = 100
+var base_attack = 20
+var base_defense = 40
+var base_agility = 10
+var base_luck = 10
+
+var equipment = {
+	"weapon": null,
+	"shield": null,
+	"head": null,
+	"body": null,
+	"accessory": null
+}
+
+var skeleton_arm = {"item_name": "Skeleton Arm", "attack_mod": 10, "health_mod": 0, "defense_mod": 0, "agility_mod": 0, "luck_mod": 2, "description": "A skeletal arm that has been cut off..."}
+var leather_helmet = {"item_name": "Leather Helmet", "attack_mod": 0, "health_mod": 10, "defense_mod": 10, "agility_mod": 2, "luck_mod": 2, "description": "A helmet out of enemies leather"}
+
+var inventory = []
+
+func _ready() -> void:
+	inventory.append({ "item_name": "Wooden sword", "type": "weapon", "attack_mod": 5, "health_mod": 0, "defense_mod": 0, "agility_mod": -1, "luck_mod": 0, "texture": preload("res://Assets/collectibles/wooden_sword.png"), "description": "Wooden sword" })
+	inventory.append({ "item_name": "Leather helmet", "type": "head", "attack_mod": 0, "health_mod": 5, "defense_mod": 10, "agility_mod": 0, "luck_mod": 0, "texture": preload("res://Assets/collectibles/leather_helmet.png"),"description": "Basic protection for your head." })
+	inventory.append({ "item_name": "Wooden shield", "type": "shield", "attack_mod": 0, "health_mod": 0, "defense_mod": 30, "agility_mod": 0,"luck_mod": 0, "texture": preload("res://Assets/collectibles/shield.png"),"description": "wooden shield" })
+
 func _physics_process(_delta: float) -> void:
 	if can_move:
-	# Get the input direction and handle the movement/deceleration.
+		
 		var direction_x := Input.get_axis("left", "right")
-		if direction_x:
-			velocity.x = direction_x * SPEED
-		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
-		
 		var direction_y := Input.get_axis("up", "down")
-		if direction_y:
-			velocity.y = direction_y * SPEED
-		else:
-			velocity.y = move_toward(velocity.y, 0, SPEED)
-		_animate_side()
 		
-		if direction_x == 1.0:
-			
-			animated_sprite_2d.flip_h = false
-		if direction_x == -1.0:
-			#_animate_side()
-			animated_sprite_2d.flip_h = true
-			
-		if direction_y == 1.0:
-			_animate_down()
-		if direction_y == -1.0:
-			_animate_up()
-				
+		velocity = Vector2.ZERO
+		if direction_x != 0:
+			velocity.x = direction_x * SPEED
+			_animate_side()
+			animated_sprite_2d.flip_h = (direction_x < 0)
+		elif direction_y != 0:
+			velocity.y = direction_y * SPEED
+			if direction_y > 0:
+				_animate_down()
+			else:
+				_animate_up()
 		move_and_slide()
+		is_moving = velocity.length() > 0
 		_animate_idle()
 
 func _animate_side() -> void:
 	if velocity.x > 1 or velocity.x < -1:
-		is_moving = true
 		animated_sprite_2d.animation = "running"
 		move_dir = "side"
-	else:
-		is_moving = false
 
 
 func _animate_down() -> void:
 	if velocity.y > 1:
-		is_moving = true
 		animated_sprite_2d.animation = "down"
 		move_dir = "down"
-	else:
-		is_moving = false
 
 func _animate_up() -> void:
 	if velocity.y < -1:
-		is_moving = true
 		animated_sprite_2d.animation = "up"
 		move_dir = "up"
-	else:
-		is_moving = false
 		
 func _animate_idle() -> void:
 	if !is_moving:
@@ -72,3 +76,25 @@ func _animate_idle() -> void:
 			animated_sprite_2d.animation = "idle"
 		if move_dir == "up":
 			animated_sprite_2d.animation = "idle_up"
+			
+func take_damage(amount: int) -> void:
+	# This looks up the tree for your Main node
+	# 'get_parent().get_parent()' usually reaches Main if Player is in LevelRoot
+	var main_node = get_tree().root.get_child(0) 
+	if main_node.has_method("update_health"):
+		main_node.update_health(-amount)
+
+func get_final_stats() -> Dictionary:
+	var final = {"health": base_health, "attack": base_attack, "defense": base_defense, "agility": base_agility, "luck": base_luck}
+	
+	for slot in equipment.values():
+		if slot:
+			final.health += slot.get("health_mod", 0)
+			final.attack += slot.get("attack_mod", 0)
+			final.defense += slot.get("defense_mod", 0)
+			final.agility += slot.get("agility_mod", 0)
+			final.luck += slot.get("luck_mod", 0)
+	return final
+	
+func get_equipment_slots() -> Dictionary:
+	return equipment

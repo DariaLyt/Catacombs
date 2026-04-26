@@ -1,3 +1,27 @@
+## 26.04
+- added simple inventory 
+![Screenshot](GIF/26.04.png)
+
+## 22.04
+- fixed floor traps "fast killing"
+- added enemy "skeleton" with patroling, player chasing and attacking functionality.  
+
+## 24.03
+- added floor traps -> animation and taking damage when spikes out
+
+## 21.03
+ - added very basic "health bar" ui and implemented take_damage function
+ - moved Camera2D to Main scene, so it doesn't get deleted/created with every level
+ - fixed player's "diagonal slide", forcing player to move only one direction even if 2 keys are pressed
+ - modified some collision in level3
+
+
+## 19.03 
+ - fixed the torch sound, added sound fading away effect.
+ - added a responsive starting screen/main menu ui
+ - added a responsive pause menu
+ - added a game sound 
+
 # Catacombs v0.1.1
 ## 17.03 
 
