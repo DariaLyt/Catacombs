@@ -13,24 +13,15 @@ var base_defense = 40
 var base_agility = 10
 var base_luck = 10
 
-var equipment = {
-	"weapon": null,
-	"shield": null,
-	"head": null,
-	"body": null,
-	"accessory": null
-}
-
 var skeleton_arm = {"item_name": "Skeleton Arm", "attack_mod": 10, "health_mod": 0, "defense_mod": 0, "agility_mod": 0, "luck_mod": 2, "description": "A skeletal arm that has been cut off..."}
 var leather_helmet = {"item_name": "Leather Helmet", "attack_mod": 0, "health_mod": 10, "defense_mod": 10, "agility_mod": 2, "luck_mod": 2, "description": "A helmet out of enemies leather"}
 
-var inventory = []
+var inventory = [] # Keep empty, let Main populate it
+var equipment = {}
 
 func _ready() -> void:
-	inventory.append({ "item_name": "Wooden sword", "type": "weapon", "attack_mod": 5, "health_mod": 0, "defense_mod": 0, "agility_mod": -1, "luck_mod": 0, "texture": preload("res://Assets/collectibles/wooden_sword.png"), "description": "Wooden sword" })
-	inventory.append({ "item_name": "Leather helmet", "type": "head", "attack_mod": 0, "health_mod": 5, "defense_mod": 10, "agility_mod": 0, "luck_mod": 0, "texture": preload("res://Assets/collectibles/leather_helmet.png"),"description": "Basic protection for your head." })
-	inventory.append({ "item_name": "Wooden shield", "type": "shield", "attack_mod": 0, "health_mod": 0, "defense_mod": 30, "agility_mod": 0,"luck_mod": 0, "texture": preload("res://Assets/collectibles/shield.png"),"description": "wooden shield" })
-
+	pass
+	
 func _physics_process(_delta: float) -> void:
 	if can_move:
 		
@@ -85,15 +76,27 @@ func take_damage(amount: int) -> void:
 		main_node.update_health(-amount)
 
 func get_final_stats() -> Dictionary:
-	var final = {"health": base_health, "attack": base_attack, "defense": base_defense, "agility": base_agility, "luck": base_luck}
+# Get health directly from the Main node so it's always in sync [cite: 11]
+	var main_node = get_tree().root.get_child(0)
+	var hp = main_node.current_health if main_node else base_health
+	
+	var final = { 
+		"health": hp, 
+		"attack": base_attack, 
+		"defense": base_defense, 
+		"agility": base_agility, 
+		"luck": base_luck 
+	}
 	
 	for slot in equipment.values():
 		if slot:
-			final.health += slot.get("health_mod", 0)
+			# Health_mod in equipment usually increases MAX health, 
+			# but for the UI, we just show current HP [cite: 10]
 			final.attack += slot.get("attack_mod", 0)
 			final.defense += slot.get("defense_mod", 0)
 			final.agility += slot.get("agility_mod", 0)
 			final.luck += slot.get("luck_mod", 0)
+	
 	return final
 	
 func get_equipment_slots() -> Dictionary:

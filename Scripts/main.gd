@@ -5,6 +5,8 @@ extends Node2D
 @onready var health_bar: ProgressBar = $HUD/HealthBar
 
 @onready var inventory_menu: CanvasLayer = $InventoryMenu
+@onready var combat_menu = $HUD/Combat_menu
+
 
 var level: int = 1 #starting point by default level1
 var current_level_node: Node = null
@@ -15,6 +17,9 @@ var current_health:int = 100
 var player_on_trap: bool = false
 var trap_cooldown_timer: float = 0.0
 var TRAP_DAMAGE_DELAY: float = 1.0
+var player_inventory = []
+var player_equipment = {"weapon": null, "shield": null, "head": null, "body": null, "accessory": null}
+var active_enemy: Node2D = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -24,6 +29,10 @@ func _ready() -> void:
 	pause_menu.hide()
 	_update_health_ui()
 	inventory_menu.hide()
+	player_inventory.append({ "item_name": "Wooden sword", "type": "weapon", "attack_mod": 5, "health_mod": 0, "defense_mod": 0, "agility_mod": -1, "luck_mod": 0, "texture": preload("res://Assets/collectibles/wooden_sword.png"), "description": "Wooden sword" })
+	player_inventory.append({ "item_name": "Leather helmet", "type": "head", "attack_mod": 0, "health_mod": 5, "defense_mod": 10, "agility_mod": 0, "luck_mod": 0, "texture": preload("res://Assets/collectibles/leather_helmet.png"),"description": "Basic protection for your head." })
+	player_inventory.append({ "item_name": "Wooden shield", "type": "shield", "attack_mod": 0, "health_mod": 0, "defense_mod": 30, "agility_mod": 0,"luck_mod": 0, "texture": preload("res://Assets/collectibles/shield.png"),"description": "wooden shield" })
+
 
 func _process(delta: float) -> void:
 	if trap_cooldown_timer > 0:
@@ -37,7 +46,30 @@ func _process(delta: float) -> void:
 				update_health(-5) 
 				trap_cooldown_timer = TRAP_DAMAGE_DELAY
 				# Note: You'll need a timer here, or the player will die in 0.1 seconds!
-					
+
+func enter_combat(enemy_node: Node2D):
+	await _fade(1.0)
+	active_enemy = enemy_node # Store the reference to the enemy 
+	get_tree().paused = true 
+	
+	var player = current_level_node.get_node_or_null("Player")
+	var stats = player.get_final_stats()
+	
+	combat_menu.setup_combat(stats, enemy_node)
+	combat_menu.show()
+	await _fade(0.0)
+
+func exit_combat(was_skill_used: bool):
+	await _fade(1.0)
+	combat_menu.hide()
+	get_tree().paused = false # Resume the world 
+	
+	if was_skill_used and active_enemy != null:
+		if active_enemy.has_method("start_timeout"):
+			active_enemy.start_timeout(3.0)        
+	active_enemy = null
+	await _fade(0.0)
+
 func update_health(amount: int) -> void:
 	current_health = clampi(current_health + amount, 0, max_health)
 	_update_health_ui()
@@ -109,6 +141,8 @@ func _setup_level(level_root: Node) -> void:
 	var player = level_root.get_node_or_null("Player")
 	var marker_name = null
 	if player:
+		player.inventory = player_inventory
+		player.equipment = player_equipment
 		if travel_direction == "next":
 			marker_name = "SpawnNext"
 		else:

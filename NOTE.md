@@ -1,3 +1,8 @@
+## 27.04
+- added a combat scene
+ * - currently "skill" button exits combat scene and "attack" only printing message in terminal
+![Screenshot](GIF/27.04.png)
+
 ## 26.04
 - added simple inventory 
 ![Screenshot](GIF/26.04.png)
