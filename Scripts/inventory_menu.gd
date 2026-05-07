@@ -4,6 +4,9 @@ extends CanvasLayer
 @onready var title: Label = $Panel/VBoxContainer/HBoxContainer/Stats_Column/Title
 @onready var slots_tree: Tree = $Panel/VBoxContainer/HBoxContainer/Equip_Column/Slots_Tree
 @onready var inventory_list: HBoxContainer = $Panel/VBoxContainer/BottomBar/ScrollContainer/InventoryList
+@onready var scroll_container: ScrollContainer = $Panel/VBoxContainer/BottomBar/ScrollContainer
+@onready var item_container: ScrollContainer = $Panel/VBoxContainer/BottomBar/ItemContainer
+@onready var items_list: HBoxContainer = $Panel/VBoxContainer/BottomBar/ItemContainer/ItemsList
 
 
 @onready var health_val = $Panel/VBoxContainer/HBoxContainer/Stats_Column/Health_Stat/StatValue
@@ -28,6 +31,8 @@ var current_stats: Dictionary = {}
 func _ready() -> void:
 	slots_tree.set_column_title(0, "Type")
 	slots_tree.set_column_title(1, "Name")
+	scroll_container.show()
+	item_container.hide()
 	_initialize_stat_previews()
 
 func _initialize_stat_previews():
@@ -69,15 +74,8 @@ func _populate_equipment_slots(player: Node2D):
 			item_node.set_icon(1, equipped_item.texture)
 		else:
 			item_node.set_text(1, "Empty")
-#func show_item_stat_preview(new_item_data: Dictionary) -> void:
-	#desc_laber.text = new_item_data.description
-	#
-	#_initialize_stat_previews()
-	#_compare_and_preview_stat("health", new_item_data.health_mod, health_arrow)
-	#_compare_and_preview_stat("attack", new_item_data.attack_mod, attack_arrow)
-	#_compare_and_preview_stat("defense", new_item_data.defense_mod, defense_arrow)
-	#_compare_and_preview_stat("agility", new_item_data.agility_mod, agility_arrow)
-	#_compare_and_preview_stat("luck", new_item_data.luck_mod, luck_arrow)
+
+
 
 func _populate_bottom_inventory(player: Node2D):
 	# Clear previous icons
@@ -87,24 +85,71 @@ func _populate_bottom_inventory(player: Node2D):
 	for item_data in player.inventory:
 		var btn = Button.new()
 		btn.icon = item_data.texture
-		btn.custom_minimum_size = Vector2(40, 40)
+		btn.custom_minimum_size = Vector2(60, 60)
 		btn.expand_icon = true
 		
 		# Connect selection/hover logic
 		btn.mouse_entered.connect(_on_inventory_item_hover.bind(item_data))
 		btn.pressed.connect(_on_inventory_item_clicked.bind(item_data))
-		
 		inventory_list.add_child(btn)
+	
+	for child in items_list.get_children():
+		child.queue_free()
+	
+	for item_data in player.items:
+		var btn = Button.new()
+		btn.icon = item_data.texture
+		btn.custom_minimum_size = Vector2(60, 60)
+		btn.expand_icon = true
+		
+		# Connect selection/hover logic
+		btn.mouse_entered.connect(_on_inventory_item_hover.bind(item_data))
+		btn.pressed.connect(_on_inventory_item_clicked.bind(item_data))
+		items_list.add_child(btn)
 
 var selected_inventory_item = null
 
-func _on_inventory_item_hover(data):
-	desc_label.text = data.description
-	_show_stat_comparison(data)
+func _on_inventory_item_hover(item_data: Dictionary):
+	selected_inventory_item = item_data
+	desc_label.text = item_data.get("description", "")
+	var flag = item_data.get("flag")
+	if flag == 0:
+		_show_stat_comparison(item_data)
+
 
 func _on_inventory_item_clicked(data):
+	var flag = data.get("flag")
+	if flag == 1:
+		_use_player_item()
 	selected_inventory_item = data
-	# Highlight the item or show it's ready to equip
+
+func _use_player_item():
+	if not selected_inventory_item: return
+	var type = selected_inventory_item.get("type")
+	var main_node = get_tree().root.get_child(0)
+	if type == "book":
+		print("book")
+		var skill_to_learn = selected_inventory_item.get("unlocks_skill")
+		if skill_to_learn:
+			player_node.learn_skill(skill_to_learn)
+			player_node.items.erase(selected_inventory_item)
+			main_node.player_items = player_node.items
+			selected_inventory_item = null
+			update_inventory(player_node)
+	else:
+		var amount = selected_inventory_item.get("amount")
+		print(amount)
+		player_node.items.erase(selected_inventory_item)
+		main_node.player_items = player_node.items
+		if type == "healing":
+			main_node.update_health(amount)
+		elif type == "attack":
+			print("attack boost")
+		elif type == "defense":
+			print("defense")
+		selected_inventory_item = null
+		update_inventory(player_node)
+	
 
 func _on_slots_tree_item_selected():
 	var selected_item = slots_tree.get_selected()
@@ -121,7 +166,7 @@ func _show_stat_comparison(new_item: Dictionary):
 	# Calculate the difference
 	var atk_diff = new_item.attack_mod - (current_equip.attack_mod if current_equip else 0)
 	var def_diff = new_item.defense_mod - (current_equip.defense_mod if current_equip else 0)
-	var hlth_diff = new_item.health_mod - (current_equip.health_mod_mod if current_equip else 0)
+	var hlth_diff = new_item.health_mod - (current_equip.health_mod if current_equip else 0)
 	var agl_diff = new_item.agility_mod - (current_equip.agility_mod if current_equip else 0)
 	var lck_diff = new_item.luck_mod - (current_equip.luck_mod if current_equip else 0)
 	
@@ -130,55 +175,24 @@ func _show_stat_comparison(new_item: Dictionary):
 	_compare_and_preview_stat("health", hlth_diff, health_preview)
 	_compare_and_preview_stat("agility", agl_diff, agility_preview)
 	_compare_and_preview_stat("luck", lck_diff, luck_preview)
-	# ... repeat for other stats
 
-#func _compare_and_preview_stat(stat_name: String, item_mod: int, preview_label: Label):
-	## Get the current value from the player [cite: 10]
-	#var current_val = player_node.get_final_stats()[stat_name]
-	#
-	## Logic: Compare new item mod against what is CURRENTLY equipped in that slot
-	#var current_equip = player_node.equipment.get(selected_inventory_item.type)
-	#var current_mod = current_equip.get(stat_name + "_mod", 0) if current_equip else 0
-	#
-	## The difference is (New Item Mod - Old Item Mod)
-	#var diff = item_mod - current_mod
-	#var final_preview_val = current_val + diff
-#
-	#if diff > 0:
-		#preview_label.text = " -> " + str(final_preview_val)
-		#preview_label.add_theme_color_override("font_color", Color.GREEN)
-		#preview_label.show()
-	#elif diff < 0:
-		#preview_label.text = " -> " + str(final_preview_val)
-		#preview_label.add_theme_color_override("font_color", Color.RED)
-		#preview_label.show()
-	#else:
-		#preview_label.hide()
-		#
-		
+
 func _compare_and_preview_stat(stat_name: String, item_mod: int, preview_label: Label):
-	# 1. Safety check: if no item is being hovered/selected, don't calculate
 	if selected_inventory_item == null:
 		preview_label.hide()
 		return
-		
-	# 2. Get the current stats from the player
 	var current_val = player_node.get_final_stats()[stat_name]
-	
-	# 3. Safe access to the currently equipped item in that specific slot
+
 	var slot_type = selected_inventory_item.get("type", "")
 	var current_equip = player_node.equipment.get(slot_type)
 	
-	# 4. Get the mod of the current equipment (0 if nothing is equipped)
 	var current_mod = 0
 	if current_equip:
 		current_mod = current_equip.get(stat_name + "_mod", 0)
 	
-	# 5. Calculate the difference
 	var diff = item_mod - current_mod
 	var final_preview_val = current_val + diff
 
-	# 6. UI Update
 	if diff != 0:
 		preview_label.text = " -> " + str(final_preview_val)
 		if diff > 0:
@@ -197,8 +211,20 @@ func _reset_item_view():
 func _on_equip_pressed():
 	if not selected_inventory_item: return
 	
-	# Perform the swap on the player
 	var type = selected_inventory_item.type
+	var is_two_handed = selected_inventory_item.get("one-handed", true) == false
+	if type == "shield":
+		var current_weapon = player_node.equipment.get("weapon")
+		if current_weapon and current_weapon.get("one-handed", true) == false:
+			print("Cannot equip shield with a two-handed weapon!")
+			return # Exit the function early
+
+	if type == "weapon" and is_two_handed:
+		var current_shield = player_node.equipment.get("shield")
+		if current_shield:
+			player_node.inventory.append(current_shield)
+			player_node.equipment["shield"] = null
+			print("Unequipped shield to hold two-handed weapon.")
 	var old_item = player_node.equipment[type]
 	player_node.equipment[type] = selected_inventory_item
 	player_node.inventory.erase(selected_inventory_item)
@@ -212,3 +238,15 @@ func _on_equip_pressed():
 	
 	selected_inventory_item = null
 	update_inventory(player_node)
+
+
+func _on_equipment_pressed() -> void:
+	print("equipment presssed")
+	item_container.hide()
+	scroll_container.show()
+
+
+func _on_items_pressed() -> void:
+	print("items pressed")
+	item_container.show()
+	scroll_container.hide()

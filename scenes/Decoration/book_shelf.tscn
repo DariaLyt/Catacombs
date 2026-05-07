@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://drlhn1n8hshli"]
+
+[ext_resource type="Script" uid="uid://c7vtnqk3tb0mm" path="res://Scripts/book_shelf.gd" id="1_05uph"]
+[ext_resource type="Texture2D" uid="uid://deu0roojsfbf7" path="res://Assets/background/bookshelf.png" id="1_fo4ji"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_05uph"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_fo4ji")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qg47r"]
+size = Vector2(20, 14)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r3pmm"]
+radius = 14.0
+height = 36.0
+
+[node name="BookShelf" type="StaticBody2D" unique_id=768609069]
+scale = Vector2(2.9, 2.9)
+script = ExtResource("1_05uph")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=628616076]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_05uph")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=935664070]
+position = Vector2(0, 6.5)
+shape = SubResource("RectangleShape2D_qg47r")
+
+[node name="Loot_range" type="Area2D" parent="." unique_id=82326752]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Loot_range" unique_id=1345882465]
+shape = SubResource("CapsuleShape2D_r3pmm")
+
+[connection signal="body_entered" from="Loot_range" to="." method="_on_loot_range_body_entered"]
+[connection signal="body_exited" from="Loot_range" to="." method="_on_loot_range_body_exited"]

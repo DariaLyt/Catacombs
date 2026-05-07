@@ -9,18 +9,17 @@ var can_move = true
 
 var base_health = 100
 var base_attack = 20
-var base_defense = 40
+var base_defense = 0
 var base_agility = 10
-var base_luck = 10
+var base_luck = 5
 
-var skeleton_arm = {"item_name": "Skeleton Arm", "attack_mod": 10, "health_mod": 0, "defense_mod": 0, "agility_mod": 0, "luck_mod": 2, "description": "A skeletal arm that has been cut off..."}
-var leather_helmet = {"item_name": "Leather Helmet", "attack_mod": 0, "health_mod": 10, "defense_mod": 10, "agility_mod": 2, "luck_mod": 2, "description": "A helmet out of enemies leather"}
-
-var inventory = [] # Keep empty, let Main populate it
+var inventory = []
 var equipment = {}
+var items = []
 
 func _ready() -> void:
-	pass
+	set_collision_layer_value(1, true)
+	set_collision_mask_value(3, false)
 	
 func _physics_process(_delta: float) -> void:
 	if can_move:
@@ -69,14 +68,11 @@ func _animate_idle() -> void:
 			animated_sprite_2d.animation = "idle_up"
 			
 func take_damage(amount: int) -> void:
-	# This looks up the tree for your Main node
-	# 'get_parent().get_parent()' usually reaches Main if Player is in LevelRoot
 	var main_node = get_tree().root.get_child(0) 
 	if main_node.has_method("update_health"):
 		main_node.update_health(-amount)
 
 func get_final_stats() -> Dictionary:
-# Get health directly from the Main node so it's always in sync [cite: 11]
 	var main_node = get_tree().root.get_child(0)
 	var hp = main_node.current_health if main_node else base_health
 	
@@ -90,8 +86,7 @@ func get_final_stats() -> Dictionary:
 	
 	for slot in equipment.values():
 		if slot:
-			# Health_mod in equipment usually increases MAX health, 
-			# but for the UI, we just show current HP [cite: 10]
+			final.health += slot.get("health_mod", 0)
 			final.attack += slot.get("attack_mod", 0)
 			final.defense += slot.get("defense_mod", 0)
 			final.agility += slot.get("agility_mod", 0)
@@ -101,3 +96,9 @@ func get_final_stats() -> Dictionary:
 	
 func get_equipment_slots() -> Dictionary:
 	return equipment
+
+func learn_skill(skill_name: String):
+	var main_node = get_tree().root.get_child(0)
+	if not main_node.learned_skills.has(skill_name):
+		main_node.learned_skills.append(skill_name)
+		print("New skill learned: ", skill_name)

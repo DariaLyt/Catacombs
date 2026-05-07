@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://cx53dhl7mamij"]
+
+[ext_resource type="Texture2D" uid="uid://diuempsmuyxyc" path="res://Assets/enemies/rpgcritter update formatted transparent.png" id="1_72wun"]
+[ext_resource type="Script" uid="uid://bvhwf2j4eaqly" path="res://Scripts/golem.gd" id="1_br26l"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_br26l"]
+atlas = ExtResource("1_72wun")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_msbej"]
+atlas = ExtResource("1_72wun")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m435n"]
+atlas = ExtResource("1_72wun")
+region = Rect2(64, 64, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8qewq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_br26l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_msbej")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m435n")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_72wun"]
+radius = 26.666668
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_br26l"]
+size = Vector2(30.666668, 25)
+
+[node name="Golem" type="CharacterBody2D" unique_id=709181158]
+texture_filter = 1
+scale = Vector2(3, 3)
+collision_layer = 3
+script = ExtResource("1_br26l")
+enemy_id = "lvl3_golem_1"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1257512348]
+sprite_frames = SubResource("SpriteFrames_8qewq")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2057765147]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1340732487]
+shape = SubResource("CircleShape2D_72wun")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1338866974]
+position = Vector2(-4.7683716e-07, 2.5)
+shape = SubResource("RectangleShape2D_br26l")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

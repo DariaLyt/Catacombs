@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://doof0b210fsjv"]
+[gd_scene format=3 uid="uid://co37pf52xg4lv"]
 
 [ext_resource type="Texture2D" uid="uid://diuempsmuyxyc" path="res://Assets/enemies/rpgcritter update formatted transparent.png" id="1_pbvs3"]
 [ext_resource type="Script" uid="uid://bgv3intsefrqu" path="res://Scripts/skeleton.gd" id="1_txkty"]
@@ -111,7 +111,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e85v8"]
-size = Vector2(13.333334, 6.666667)
+size = Vector2(15.666668, 14.666667)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_txkty"]
 radius = 49.553566
@@ -120,6 +120,7 @@ radius = 49.553566
 scale = Vector2(3, 3)
 collision_layer = 3
 script = ExtResource("1_txkty")
+enemy_id = "lvl2_skeleton_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=283453625]
 texture_filter = 1
@@ -128,7 +129,7 @@ animation = &"down"
 autoplay = "down"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=366656357]
-position = Vector2(-0.6666666, 6.3333335)
+position = Vector2(-0.5000001, 5.666667)
 shape = SubResource("RectangleShape2D_e85v8")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=2046626073]

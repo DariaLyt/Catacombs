@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://bwj7wwrm67ech"]
+
+[ext_resource type="Texture2D" uid="uid://cs6tgf16lljks" path="res://Assets/background/chests_32x32.jpg" id="1_8io4h"]
+[ext_resource type="Script" uid="uid://c06yw3p6pfpws" path="res://Scripts/chest.gd" id="1_e5epu"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e5epu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_8io4h")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8d1cy"]
+size = Vector2(32, 19)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8io4h"]
+radius = 27.333334
+
+[node name="chest" type="StaticBody2D" unique_id=1401271381]
+scale = Vector2(1.5, 1.5)
+script = ExtResource("1_e5epu")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1936716142]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_e5epu")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=852343954]
+position = Vector2(0, 6.5)
+shape = SubResource("RectangleShape2D_8d1cy")
+
+[node name="Loot_range" type="Area2D" parent="." unique_id=1015687760]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Loot_range" unique_id=1661898815]
+shape = SubResource("CircleShape2D_8io4h")
+
+[connection signal="body_entered" from="Loot_range" to="." method="_on_loot_range_body_entered"]
+[connection signal="body_exited" from="Loot_range" to="." method="_on_loot_range_body_exited"]

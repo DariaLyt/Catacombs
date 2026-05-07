@@ -189,16 +189,43 @@ allow_search = false
 scroll_horizontal_enabled = false
 scroll_vertical_enabled = false
 
-[node name="BottomBar" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=848235485]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=117083538]
+layout_mode = 2
+alignment = 1
+
+[node name="Equipment" type="Button" parent="Panel/VBoxContainer/HBoxContainer2" unique_id=1415284570]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Equipment"
+
+[node name="Items" type="Button" parent="Panel/VBoxContainer/HBoxContainer2" unique_id=817428435]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Items"
+
+[node name="BottomBar" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=146768641]
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer/BottomBar" unique_id=1669778874]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="InventoryList" type="HBoxContainer" parent="Panel/VBoxContainer/BottomBar/ScrollContainer" unique_id=1779844982]
+texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="ItemContainer" type="ScrollContainer" parent="Panel/VBoxContainer/BottomBar" unique_id=2113905729]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ItemsList" type="HBoxContainer" parent="Panel/VBoxContainer/BottomBar/ItemContainer" unique_id=2065946062]
+texture_filter = 1
+layout_mode = 2
+
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Equip_Column/TabButtons/equip" to="." method="_on_equip_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer2/Equipment" to="." method="_on_equipment_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer2/Items" to="." method="_on_items_pressed"]

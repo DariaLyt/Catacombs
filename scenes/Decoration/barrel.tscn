@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://dnyx4q556lgbs"]
+
+[ext_resource type="Texture2D" uid="uid://bmksac7ryclle" path="res://Assets/background/Barrel Sprite.png" id="1_gmtm6"]
+[ext_resource type="Script" uid="uid://b53cnmcqvpvq7" path="res://Scripts/barrel.gd" id="1_tujii"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gmtm6"]
+atlas = ExtResource("1_gmtm6")
+region = Rect2(0, 0, 15, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tujii"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gmtm6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1bbh1"]
+size = Vector2(15.333334, 9.333334)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2ew4j"]
+radius = 13.682918
+
+[node name="barrel" type="StaticBody2D" unique_id=1396999524]
+scale = Vector2(3, 3)
+script = ExtResource("1_tujii")
+barrel_id = "barrel_lvl1"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=509863088]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_tujii")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1332140240]
+position = Vector2(2.3841858e-07, 3.666667)
+shape = SubResource("RectangleShape2D_1bbh1")
+
+[node name="Loot_range" type="Area2D" parent="." unique_id=1386353927]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Loot_range" unique_id=390443907]
+shape = SubResource("CircleShape2D_2ew4j")
+
+[connection signal="body_entered" from="Loot_range" to="." method="_on_loot_range_body_entered"]

@@ -1,3 +1,24 @@
+## 05.05
+ - added a save point 
+
+## 04.05
+ - added a looting system
+ - - barrels store potions (healing potion, damage potion and defense potion)
+ - - - only healing potion is currently working 
+ - - chests store equipment (weapon, shield, head, body, accessory)
+ - - - added two-handed weapon, when equipping it, player cannot use shield
+ - - bookshelves store skill books
+ - - - using a book unlock new skill, available during combat
+
+## 28.04
+ - added new enemies (goblin, golem)
+ - modified combat. added skills (talk, run, steal, escape plan)
+ - added items inventory 
+ - implemented healing mechanics
+
+ ![Screenshot](GIF/28.04.png) 
+
+
 ## 27.04
 - added a combat scene
  * - currently "skill" button exits combat scene and "attack" only printing message in terminal
@@ -9,7 +30,7 @@
 
 ## 22.04
 - fixed floor traps "fast killing"
-- added enemy "skeleton" with patroling, player chasing and attacking functionality.  
+- added enemy "skeleton" with patrolling, player chasing and attacking functionality.  
 
 ## 24.03
 - added floor traps -> animation and taking damage when spikes out

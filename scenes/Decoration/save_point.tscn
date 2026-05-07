@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://cexrdjq4ubpq7"]
+
+[ext_resource type="Script" uid="uid://dmiau8knawhoh" path="res://Scripts/save_point.gd" id="1_bwfp3"]
+[ext_resource type="Texture2D" uid="uid://nrc8sac35lq3" path="res://Assets/background/furniture51.png" id="1_wquxf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bwfp3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_wquxf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x40vf"]
+size = Vector2(24, 15.666668)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1684k"]
+radius = 17.74511
+
+[node name="save_point" type="StaticBody2D" unique_id=1172412952]
+scale = Vector2(3, 3)
+script = ExtResource("1_bwfp3")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1594024512]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_bwfp3")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1779357506]
+position = Vector2(0, 3.833334)
+shape = SubResource("RectangleShape2D_x40vf")
+
+[node name="Save_range" type="Area2D" parent="." unique_id=235221250]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Save_range" unique_id=52254519]
+shape = SubResource("CircleShape2D_1684k")
+
+[connection signal="body_entered" from="Save_range" to="." method="_on_save_range_body_entered"]
+[connection signal="body_exited" from="Save_range" to="." method="_on_save_range_body_exited"]
