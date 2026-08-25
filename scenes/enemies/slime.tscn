@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bkjhe5ft7jrc7"]
+
+[ext_resource type="Texture2D" uid="uid://diuempsmuyxyc" path="res://Assets/enemies/rpgcritter update formatted transparent.png" id="1_tex"]
+[ext_resource type="Script" uid="uid://pmwtc0l7w04k" path="res://Scripts/slime.gd" id="2_scr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1"]
+atlas = ExtResource("1_tex")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f2"]
+atlas = ExtResource("1_tex")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f3"]
+atlas = ExtResource("1_tex")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_slime"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f3")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(14, 14)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_area"]
+radius = 20.13565
+
+[node name="Slime" type="CharacterBody2D" unique_id=88167928]
+scale = Vector2(3, 3)
+collision_layer = 3
+script = ExtResource("2_scr")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1772692651]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_slime")
+animation = &"down"
+autoplay = "down"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=162457102]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=422305416]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=359774880]
+shape = SubResource("CircleShape2D_area")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

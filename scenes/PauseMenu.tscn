@@ -53,6 +53,13 @@ theme_override_font_sizes/font_size = 25
 text = "Continue
 "
 
+[node name="QuestLog" type="Button" parent="CenterContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jvnd5")
+theme_override_font_sizes/font_size = 25
+text = "Quest Log"
+
 [node name="SaveGame" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1654671458]
 texture_filter = 1
 layout_mode = 2
@@ -69,4 +76,5 @@ theme_override_font_sizes/font_size = 25
 text = "Exit"
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ContinueGame" to="." method="_on_continue_game_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/QuestLog" to="." method="_on_quest_log_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]

@@ -31,6 +31,18 @@ region = Rect2(0, 64, 32, 32)
 atlas = ExtResource("2_oxaj4")
 region = Rect2(96, 16, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime"]
+atlas = ExtResource("2_oxaj4")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mushroom"]
+atlas = ExtResource("2_oxaj4")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_skull"]
+atlas = ExtResource("2_oxaj4")
+region = Rect2(192, 96, 16, 16)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_nwo1q"]
 animations = [{
 "frames": [{
@@ -55,6 +67,30 @@ animations = [{
 }],
 "loop": true,
 "name": &"skeleton",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime")
+}],
+"loop": true,
+"name": &"slime",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mushroom")
+}],
+"loop": true,
+"name": &"mushroom",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_skull")
+}],
+"loop": true,
+"name": &"skull",
 "speed": 5.0
 }]
 

@@ -68,12 +68,12 @@ func _animate_idle() -> void:
 			animated_sprite_2d.animation = "idle_up"
 			
 func take_damage(amount: int) -> void:
-	var main_node = get_tree().root.get_child(0) 
+	var main_node = get_tree().get_first_node_in_group("game_main") 
 	if main_node.has_method("update_health"):
 		main_node.update_health(-amount)
 
 func get_final_stats() -> Dictionary:
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	var hp = main_node.current_health if main_node else base_health
 	
 	var final = { 
@@ -98,7 +98,7 @@ func get_equipment_slots() -> Dictionary:
 	return equipment
 
 func learn_skill(skill_name: String):
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	if not main_node.learned_skills.has(skill_name):
 		main_node.learned_skills.append(skill_name)
 		print("New skill learned: ", skill_name)

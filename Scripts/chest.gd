@@ -8,7 +8,12 @@ var is_looted = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var main_node = get_tree().root.get_child(0)
+	call_deferred("_apply_looted_state")
+
+func _apply_looted_state() -> void:
+	var main_node = get_tree().get_first_node_in_group("game_main")
+	if main_node == null:
+		return
 	if chest_id in main_node.looted_containers:
 		set_as_looted()
 
@@ -19,7 +24,7 @@ func _input(event):
 
 func loot_chest():
 	is_looted = true
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	
 	# Randomize item count (0 to 2)
 	var item_count = randi() % 3 

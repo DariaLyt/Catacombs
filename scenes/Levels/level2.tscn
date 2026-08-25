@@ -3382,6 +3382,8 @@ position = Vector2(1008, 209)
 [node name="BookShelf" parent="Looting" unique_id=768609069 instance=ExtResource("7_kn2gx")]
 position = Vector2(357.99997, 186.99998)
 bookshelf_id = "bookshelf_lvl2_1"
+mode = "journal"
+journal_id = "wardens_ledger_roster"
 
 [node name="BookShelf2" parent="Looting" unique_id=827675375 instance=ExtResource("7_kn2gx")]
 position = Vector2(504.99997, 190.99998)

@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://cquestdialogue01"]
+
+[ext_resource type="Script" path="res://Scripts/dialogue_ui.gd" id="1_dialogue"]
+[ext_resource type="FontFile" uid="uid://6hbdeq2t0tcq" path="res://Assets/Fonts/PixelPurl.ttf" id="2_font"]
+
+[node name="DialogueUI" type="CanvasLayer"]
+process_mode = 3
+layer = 10
+script = ExtResource("1_dialogue")
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -200.0
+offset_right = -40.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SpeakerLabel" type="Label" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 22
+text = "Speaker"
+
+[node name="BodyLabel" type="Label" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "Dialogue text goes here."
+autowrap_mode = 3
+
+[node name="HintLabel" type="Label" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "Space / Enter — continue"
+horizontal_alignment = 2

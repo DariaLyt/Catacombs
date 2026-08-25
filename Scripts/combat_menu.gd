@@ -17,13 +17,18 @@ var skills_description = {
 	"Talk": "Talking can sometimes get you out of uncomfortable situations.",
 	"Run": "There is no shame in running from battles to live another day.",
 	"Steal": "Steal from the rich and give to yourself.",
-	"Escape plan": "A skill that greatly enhances your chances for running away from fights."
-	
+	"Escape plan": "A skill that greatly enhances your chances for running away from fights.",
+	"FireBall": "Hurl a ball of fire at the enemy for heavy magic damage.",
+	"Heal": "Channel holy energy to restore your health.",
 }
 var current_player_hp: int
 enum Turn {PLAYER, ENEMY, BUSY}
 var current_turn = Turn.PLAYER
 var is_guarding: bool = false
+var temp_agility_bonus: int = 0
+var temp_attack_bonus: int = 0
+var temp_defense_bonus: int = 0
+var temp_luck_bonus: int = 0
 var enemy_node: Node2D
 
 func _ready():
@@ -39,7 +44,7 @@ func _setup_skill_tree():
 	skill_tree.hide_root = true
 	skill_tree.columns = 2
 	var root = skill_tree.create_item()
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	var skills = main_node.learned_skills
 	var current_row = null
 	for i in range(skills.size()):
@@ -56,7 +61,7 @@ func _setup_skill_tree():
 func setup_combat(player:Node2D, enemy: Node2D):
 	enemy_node = enemy
 	player_node = player
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	var current_enemy_name = enemy.enemy_name
 	enemy_to_fight.animation = current_enemy_name
 	current_player_hp = main_node.current_health
@@ -65,6 +70,10 @@ func setup_combat(player:Node2D, enemy: Node2D):
 	
 	current_enemy_hp = enemy.health_amount
 	current_enemy_attack = enemy.damage_amount
+	temp_agility_bonus = 0
+	temp_attack_bonus = 0
+	temp_defense_bonus = 0
+	temp_luck_bonus = 0
 
 	current_turn = Turn.PLAYER
 	_update_ui_state()
@@ -89,9 +98,9 @@ func _on_attack_pressed():
 		skill_tree.hide()
 		stats.show()
 		
-	var player_atk = player_node.get_final_stats()["attack"]
+	var player_atk = player_node.get_final_stats()["attack"] + temp_attack_bonus
 	var roll = randf_range(0, 100)
-	var is_crit = roll < player_node.get_final_stats()["luck"]
+	var is_crit = roll < player_node.get_final_stats()["luck"] + temp_luck_bonus
 	if is_crit:
 		current_enemy_attack = current_enemy_attack - (player_atk * 2)
 	else:
@@ -112,7 +121,7 @@ func _on_victory():
 	current_turn = Turn.BUSY
 	print("Victory!")
 	await get_tree().create_timer(1.5).timeout
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	main_node.exit_combat(false) 
 
 func _on_defeat():
@@ -120,7 +129,7 @@ func _on_defeat():
 	print("Defeated...")
 	$ColorRect.color = Color(0.5, 0, 0, 0.5)
 	await get_tree().create_timer(0.5).timeout
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	main_node.exit_combat(true)
 	main_node.respawn_player()
 	#sget_tree().reload_current_scene()
@@ -135,14 +144,45 @@ func _on_skills_item_selected() -> void:
 	var selected = skill_tree.get_selected()
 	var col = skill_tree.get_selected_column()
 	var skill_name = selected.get_metadata(col)
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	
 	match skill_name:
 		"Escape plan":
 			main_node.exit_combat(true)
-			return 
+			return
 		"Talk":
 			print("enemy doesnt understand you")
+		"FireBall":
+			current_turn = Turn.BUSY
+			var magic_damage := int(player_node.get_final_stats()["attack"] * 1.5)
+			current_enemy_hp -= magic_damage
+			print("FireBall hits for ", magic_damage)
+			if current_enemy_hp <= 0:
+				skill_tree.hide()
+				description.hide()
+				stats.show()
+				_on_victory()
+				return
+			skill_tree.hide()
+			description.hide()
+			stats.show()
+			await get_tree().create_timer(0.8).timeout
+			_start_enemy_turn()
+			return
+		"Heal":
+			current_turn = Turn.BUSY
+			var heal_amount := 20
+			current_player_hp = min(100, current_player_hp + heal_amount)
+			health_value_label.text = str(current_player_hp)
+			health_bar.value = current_player_hp
+			main_node.current_health = current_player_hp
+			print("Healed for ", heal_amount)
+			skill_tree.hide()
+			description.hide()
+			stats.show()
+			await get_tree().create_timer(0.5).timeout
+			_start_enemy_turn()
+			return
 	skill_tree.hide()
 	description.hide()
 	stats.show()
@@ -151,7 +191,7 @@ func _on_skills_item_selected() -> void:
 	#var selected = skill_tree.get_selected()
 	#var col = skill_tree.get_selected_column()
 	#var skill_name = selected.get_text(col).strip_edges()
-	#var main_node = get_tree().root.get_child(0)
+	#var main_node = get_tree().get_first_node_in_group("game_main")
 	#print("Selected Skill: ", skill_name)
 	#if skill_name == "Talk":
 		#print("enemy doesnt understand you")
@@ -199,14 +239,14 @@ func _start_enemy_turn():
 	
 	if is_guarding:
 		var dodge = randf_range(0, 100)
-		if dodge < player_node.get_final_stats()["agility"]:
+		if dodge < player_node.get_final_stats()["agility"] + temp_agility_bonus:
 			damage = 0
 			current_turn = Turn.PLAYER
 			
 			is_guarding = false
 			return
 		
-	var base_damage = current_enemy_attack - (player_node.get_final_stats()["defense"] / 3.0)
+	var base_damage = current_enemy_attack - ((player_node.get_final_stats()["defense"] + temp_defense_bonus) / 3.0)
 	damage = max(1, int(base_damage))
 	if is_guarding:
 		damage = ceil(damage * 0.5) 
@@ -216,7 +256,7 @@ func _start_enemy_turn():
 	current_player_hp -= damage
 	health_value_label.text = str(current_player_hp)
 	health_bar.value = current_player_hp
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	main_node.current_health = current_player_hp
 	
 	if current_player_hp <= 0:
@@ -259,10 +299,23 @@ func _on_items_item_activated() -> void:
 	var item_data = selected.get_metadata(col)
 	
 	if item_data:
-		if item_data.has("amount") and item_data["amount"] > 0:
-			current_player_hp = min(100, current_player_hp + item_data["amount"])
-			health_value_label.text = str(current_player_hp)
-			health_bar.value = current_player_hp
+		var item_type: String = item_data.get("type", "")
+		var amount: int = item_data.get("amount", 0)
+		match item_type:
+			"healing":
+				current_player_hp = min(100, current_player_hp + amount)
+				health_value_label.text = str(current_player_hp)
+				health_bar.value = current_player_hp
+			"attack":
+				temp_attack_bonus += amount
+			"defense":
+				temp_defense_bonus += amount
+			"agility":
+				temp_agility_bonus += amount
+			"luck":
+				temp_luck_bonus += amount
+		var main_node = get_tree().get_first_node_in_group("game_main")
+		main_node.current_health = current_player_hp
 		print("Used item: ", item_data["item_name"])
 		player_node.items.erase(item_data)
 		

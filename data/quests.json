@@ -1,0 +1,134 @@
+{
+  "quests": {
+    "wardens_ledger": {
+      "title": "The Warden's Ledger",
+      "act": 1,
+      "type": "main",
+      "objectives": [
+        {"id": "read_roster", "text": "Read the duty roster in Warden's Walk."},
+        {"id": "find_oath_hall", "text": "Find the Hall of the First Oath (Level 4)."},
+        {"id": "claim_crown", "text": "Recover the Mnemonic Crown."}
+      ]
+    },
+    "spoils_of_the_dead": {
+      "title": "Spoils of the Dead",
+      "act": 1,
+      "type": "side",
+      "objectives": [
+        {"id": "talk_merchant", "text": "Speak with Mira at the catacombs entrance."},
+        {"id": "bring_equipment", "text": "Bring scavenged equipment from the upper halls."}
+      ]
+    },
+    "light_the_dark": {
+      "title": "Light the Dark",
+      "act": 1,
+      "type": "side",
+      "objectives": [
+        {"id": "pass_junctions", "text": "Pass three torch-lit junctions without dying."}
+      ]
+    },
+    "last_confession": {
+      "title": "The Last Confession",
+      "act": 2,
+      "type": "main",
+      "objectives": [
+        {"id": "read_confession", "text": "Find the priest's confession in the Confessor's Cell."},
+        {"id": "claim_ash", "text": "Recover the Merciful Ash from the plague pit."}
+      ]
+    },
+    "goblin_ledger": {
+      "title": "Goblin Ledger",
+      "act": 2,
+      "type": "side",
+      "objectives": [
+        {"id": "find_map", "text": "Recover the stolen delver's map from a goblin camp."},
+        {"id": "return_cache", "text": "Return the map to the marked cache."}
+      ]
+    },
+    "disarm_or_die": {
+      "title": "Disarm or Die",
+      "act": 2,
+      "type": "side",
+      "objectives": [
+        {"id": "survive_traps", "text": "Survive three trap rooms without using a ward-stone."}
+      ]
+    },
+    "serenes_letter": {
+      "title": "Serene's Letter",
+      "act": 3,
+      "type": "main",
+      "objectives": [
+        {"id": "read_letter", "text": "Find Serene's letter behind the royal blockade."},
+        {"id": "claim_seal", "text": "Take the Pale Seal from the Pale Vault."}
+      ]
+    },
+    "tears_of_stone": {
+      "title": "Tears of Stone",
+      "act": 3,
+      "type": "side",
+      "objectives": [
+        {"id": "use_golem_tear", "text": "Use a golem tear at the cracked statue in the Foundry."}
+      ]
+    },
+    "crimson_heresy": {
+      "title": "The Crimson Heresy",
+      "act": 3,
+      "type": "side",
+      "objectives": [
+        {"id": "find_axe_inscription", "text": "Read the inscription on the crimson axe."},
+        {"id": "open_alcove", "text": "Find the hidden alcove in Serene's Blockade."}
+      ]
+    }
+  },
+  "journals": {
+    "wardens_ledger_roster": {
+      "title": "Crumbling Duty Roster",
+      "pages": [
+        "Third Warden's Watch — roster of the reliquary ring.\n\nThe crown of King Aldric the Remembered was removed from the reliquary ring for safekeeping.",
+        "It was hidden where the wardens swore their first oath — beyond the ring, in the Hall of the First Oath.",
+        "None of us were meant to leave this post alive. If you read this, delver, the oath-stone niche still holds what we could not protect."
+      ],
+      "quest_id": "wardens_ledger",
+      "objective_id": "read_roster",
+      "start_quest": true,
+      "complete_objective": true
+    }
+  },
+  "npcs": {
+    "surface_merchant": {
+      "display_name": "Mira the Scavenger",
+      "offers_quest": "spoils_of_the_dead",
+      "dialogue": {
+        "first_meeting": [
+          "You're the one they call the Lantern, aren't you?",
+          "I pay good coin for equipment from the upper halls — anything a delver doesn't need to keep breathing.",
+          "Bring me gear from the crypts and I'll make it worth your while."
+        ],
+        "quest_active": [
+          "Still breathing? Good.",
+          "Scavenge any weapon, armor, or trinket from the Entry Crypt or Warden's Walk and bring it here."
+        ],
+        "turn_in_ready": [
+          "That looks like proper catacomb steel. Hand it over.",
+          "Take these — you'll need them deeper down."
+        ],
+        "quest_complete": [
+          "You've paid your keep for now, delver.",
+          "The merchants on the surface remember who feeds them."
+        ],
+        "default": [
+          "The catacombs don't give gifts. They lend them until something hungrier shows up."
+        ]
+      },
+      "turn_in": {
+        "quest_id": "spoils_of_the_dead",
+        "objective_id": "bring_equipment",
+        "requires_equipment_count": 1,
+        "rewards": [
+          {"item_name": "small potion", "type": "healing", "amount": 10, "flag": 1},
+          {"item_name": "medium potion", "type": "healing", "amount": 25, "flag": 1}
+        ]
+      }
+    }
+  }
+}

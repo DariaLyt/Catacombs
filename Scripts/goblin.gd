@@ -27,7 +27,7 @@ func start_timeout(duration: float):
 	is_stunned = false
 
 func trigger_combat():
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	if main_node.has_method("enter_combat"):
 		main_node.enter_combat(self)
 

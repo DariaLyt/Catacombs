@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://dkm2ykbk3miuq"]
+
+[ext_resource type="Texture2D" uid="uid://diuempsmuyxyc" path="res://Assets/enemies/rpgcritter update formatted transparent.png" id="1_tex"]
+[ext_resource type="Script" uid="uid://b75fo2mslidyk" path="res://Scripts/mushroom.gd" id="2_scr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1"]
+atlas = ExtResource("1_tex")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f2"]
+atlas = ExtResource("1_tex")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f3"]
+atlas = ExtResource("1_tex")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mush"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f3")
+}],
+"loop": true,
+"name": &"down",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(16, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_area"]
+radius = 20.677418
+
+[node name="Mushroom" type="CharacterBody2D" unique_id=364794313]
+scale = Vector2(3, 3)
+collision_layer = 3
+script = ExtResource("2_scr")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1391041127]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_mush")
+animation = &"down"
+autoplay = "down"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=352289343]
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=194676998]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=756295365]
+shape = SubResource("CircleShape2D_area")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

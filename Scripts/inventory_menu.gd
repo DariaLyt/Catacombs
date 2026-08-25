@@ -126,9 +126,8 @@ func _on_inventory_item_clicked(data):
 func _use_player_item():
 	if not selected_inventory_item: return
 	var type = selected_inventory_item.get("type")
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	if type == "book":
-		print("book")
 		var skill_to_learn = selected_inventory_item.get("unlocks_skill")
 		if skill_to_learn:
 			player_node.learn_skill(skill_to_learn)
@@ -136,6 +135,17 @@ func _use_player_item():
 			main_node.player_items = player_node.items
 			selected_inventory_item = null
 			update_inventory(player_node)
+	elif type == "journal":
+		var journal_id: String = selected_inventory_item.get("journal_id", "")
+		if journal_id.is_empty():
+			return
+		get_tree().paused = false
+		hide()
+		main_node.show_journal(journal_id)
+		player_node.items.erase(selected_inventory_item)
+		main_node.player_items = player_node.items
+		selected_inventory_item = null
+		update_inventory(player_node)
 	else:
 		var amount = selected_inventory_item.get("amount")
 		print(amount)
@@ -144,9 +154,13 @@ func _use_player_item():
 		if type == "healing":
 			main_node.update_health(amount)
 		elif type == "attack":
-			print("attack boost")
+			print("attack boost — use in combat for bonus damage")
 		elif type == "defense":
-			print("defense")
+			print("defense boost — use in combat for extra protection")
+		elif type == "agility":
+			print("agility boost — use in combat for better dodging")
+		elif type == "luck":
+			print("luck boost — use in combat for better critical hits")
 		selected_inventory_item = null
 		update_inventory(player_node)
 	
@@ -232,7 +246,7 @@ func _on_equip_pressed():
 	if old_item:
 		player_node.inventory.append(old_item)
 	
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	main_node.player_inventory = player_node.inventory
 	main_node.player_equipment = player_node.equipment
 	

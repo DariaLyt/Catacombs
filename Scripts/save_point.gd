@@ -8,7 +8,7 @@ func _input(event):
 		perform_save()
 
 func perform_save():
-	var main_node = get_tree().root.get_child(0)
+	var main_node = get_tree().get_first_node_in_group("game_main")
 	var save_pos = save_position
 	main_node.save_game(save_pos)
 	print("Saved at position: ", save_pos)
